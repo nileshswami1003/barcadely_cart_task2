@@ -1,3 +1,10 @@
+<?php
+// Start a session if one is not already active
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,36 +18,31 @@
 include 'navbar.php';
 ?>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-3 mt-2">
-            
-        
-        </div>
-        <div class="col-9">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody id="productTableBody">
-                <!-- <tr data-id="1">
-                    <td class="price-cell">$20.00</td>
-                    <td class="count-cell">2</td>
-                </tr> -->
-            </tbody>
-        </table>
-        <div class="cartTotalPayable" id="cartTotalPayable">
-
-        </div>
-        </div>
-    </div>
+<div class="jumbotron text-center">
+    <h1 class="display-4">Your, cart!</h1>
+    <h3 id="cartTotal"> </h3>
+    <?php
+    if (!isset($_SESSION['user_id'])) {
+    ?>
+        <!-- <form action="" method="post"> -->
+            <a class="btn btn-primary btn-lg" href="sign_in.php" role="button">Checkout</a>
+        <!-- </form> -->
+    <?php
+    } else {
+    ?>
+        <!-- <form action="" method="post"> -->
+            <a class="btn btn-primary btn-lg" href="checkout.php" role="button">Checkout</a>
+        <!-- </form> -->
+    <?php
+    }
+    ?>
 </div>
 
+<div class="container-fluid">
+    <div class="row row-cols-1 row-cols-md-3 mt-2" id="productContainer">
+
+    </div>
+</div>
 
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

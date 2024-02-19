@@ -36,43 +36,60 @@ $(document).ready(function (){
 
     // Function to display product details in an HTML table
     function displayProductDetailsInTable(data) {
-        var tableBody = $('#productTableBody');
-        tableBody.empty();
+        var productContainer = $('#productContainer');
+        productContainer.empty();
         var cartTotal=0;
         // Iterate through the retrieved product details and append rows to the table
         data.forEach(function (product) {
-            cartTotal = cartTotal+product.prod_price*getProductCountInCart(product.prod_id);
-            console.log("cart total : "+cartTotal);
 
-            var row = $('<tr [data-id="' + product.prod_id + '"]>');
-            row.append($('<td>').text(product.prod_id));
-            row.append($('<td>').text(product.prod_name));
-            row.append($('<td>').text('$' + product.prod_price));
-            row.append($('<td>').text('Total : $'+(product.prod_price*getProductCountInCart(product.prod_id))));
-            row.append($('<td>').text(product.prod_img));
-            // product specific count
-            row.append($('<td class="count-cell">').text(getProductCountInCart(product.prod_id)));
-            // Add plus and minus buttons
-            var plusButton = $('<button class="modifyCountBtn">+</button>').data('id', product.prod_id);
-            var minusButton = $('<button class="modifyCountBtn">-</button>').data('id', product.prod_id);
+            cartTotal = cartTotal+product.prod_price*getProductCountInCart(product.prod_id);
+            // console.log("cart total : "+cartTotal);
+            $('#cartTotal').text("Cart Total : $"+cartTotal);
+
+            var card = $('<div class="col mb-3">');
+            card.append($('<div class="card">'));
+            // card.append($('<img src="uploads/product-img.jpg" class="card-img-top" alt="' + product.prod_name + '">'));
+
+            var cardBody = $('<div class="card-body">');
+            cardBody.append($('<h5 class="card-title">' + product.prod_name + '</h5>'));
+            cardBody.append($('<p class="card-text">Price: $' + product.prod_price + '</p>'));
+            
+            // // product specific count
+            cardBody.append($('<p>').text(getProductCountInCart(product.prod_id)));
+            // poduct specific total
+            cardBody.append($('<p>').text('Total : '+(product.prod_price*getProductCountInCart(product.prod_id))));
+
+            // // Add plus and minus buttons
+            var plusButton = $('<button style="width:40px;" class="modifyCountBtn m-1 btn btn-sm btn-dark">+</button>').data('id', product.prod_id);
+            var minusButton = $('<button style="width:40px;" class="modifyCountBtn m-1 btn btn-sm btn-dark">-</button>').data('id', product.prod_id);
             
             // Handle click events for plus and minus buttons
             plusButton.on('click', function () {
                 modifyProductCount($(this).data('id'), 1); // Increase count by 1
-                // modifyProductPrice($(this).data('id'), product.prod_price);
             });
 
             minusButton.on('click', function () {
                 modifyProductCount($(this).data('id'), -1); // Decrease count by 1
             });
 
-            row.append($('<td>').append(plusButton).append(minusButton));
-            tableBody.append(row);
+            cardBody.append($('<div class="card-footer">').append(plusButton).append(minusButton));
+            card.append(cardBody);
+
+            productContainer.append(card);
+
         });
+
+        setCartTotal(cartTotal);
+    }
+
+    function setCartTotal(cartTotal){
+        // add cart total to local storage
+        // var total = $("#cartTotal").val();
+        localStorage.setItem('cartTotal', cartTotal);
     }
 
     // Function to modify the product count in the cart
-    function modifyProductCount(productId, delta) {
+    function modifyProductCount(productId, delta, cartTotal) {
         var cartItems = JSON.parse(localStorage.getItem('cart')) || [];
         // var item = cartItems.find(item => item.productId === productId);
         var itemIndex = cartItems.findIndex(item => item.productId === productId);
@@ -100,6 +117,10 @@ $(document).ready(function (){
             updateTotalCountDisplay(); //available in index.js
             // $('#productTableBody').empty();
             getCartData();
+
+            // // add cart total to local storage
+            // var total = $("#cartTotal").val();
+            // localStorage.setItem('cartTotal', total);
         }
     }
 
@@ -120,7 +141,7 @@ $(document).ready(function (){
         cartItems.forEach(function (item) {
             totalCount += item.count;
         });
-        console.log('Total Product Count in Cart:', totalCount);
+        // console.log('Total Product Count in Cart:', totalCount);
         return totalCount;
     }
 

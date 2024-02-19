@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 19, 2024 at 08:35 AM
+-- Generation Time: Feb 19, 2024 at 03:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,6 +42,39 @@ INSERT INTO `adress_types` (`adr_type_id`, `adr_type_name`, `adr_type_desc`, `ad
 (1, 'HOME', NULL, 1),
 (2, 'OFFICE', NULL, 1),
 (3, 'SHIPPING', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_details`
+--
+
+CREATE TABLE `order_details` (
+  `ord_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `ord_date` varchar(50) DEFAULT NULL,
+  `prod_id` int(11) DEFAULT NULL,
+  `prod_count` int(11) NOT NULL DEFAULT 0,
+  `ord_status` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `pay_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `pay_date` varchar(50) DEFAULT NULL,
+  `pay_amt` double NOT NULL DEFAULT 0,
+  `pay_status` tinyint(4) NOT NULL DEFAULT 1,
+  `pay_remark` varchar(50) DEFAULT NULL,
+  `card_no` bigint(20) DEFAULT NULL,
+  `card_cvv` tinyint(4) DEFAULT NULL,
+  `card_expdt` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -128,16 +161,6 @@ CREATE TABLE `users` (
   `user_regdate` varchar(20) DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`user_id`, `user_fname`, `user_mname`, `user_lname`, `user_dob`, `user_email`, `user_pass`, `user_phone`, `user_photo`, `user_role`, `user_status`, `user_regdate`) VALUES
-(1, 'user', NULL, 'user', NULL, 'user@gmail.com', 'User@123', NULL, NULL, 1, 1, '2024-02-18 11:31:07'),
-(2, 'user2', NULL, 'user2', NULL, 'user2@gmail.com', 'User@123', NULL, NULL, 1, 1, '2024-02-18 11:40:09'),
-(3, 'admin', 'admin', 'admin', NULL, 'admin@gmail.com', 'Admin@123', 9879879878, NULL, 2, 1, 'current_timestamp()'),
-(4, 'test', NULL, 'test', NULL, 'test@gmail.com', 'Test@123', NULL, NULL, 1, 1, '2024-02-18 15:30:14');
-
 -- --------------------------------------------------------
 
 --
@@ -164,6 +187,18 @@ CREATE TABLE `user_addresses` (
 ALTER TABLE `adress_types`
   ADD PRIMARY KEY (`adr_type_id`),
   ADD UNIQUE KEY `adr_type_name` (`adr_type_name`);
+
+--
+-- Indexes for table `order_details`
+--
+ALTER TABLE `order_details`
+  ADD PRIMARY KEY (`ord_id`);
+
+--
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`pay_id`);
 
 --
 -- Indexes for table `products`
@@ -208,6 +243,18 @@ ALTER TABLE `adress_types`
   MODIFY `adr_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `order_details`
+--
+ALTER TABLE `order_details`
+  MODIFY `ord_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `pay_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
@@ -229,7 +276,7 @@ ALTER TABLE `product_stock`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_addresses`

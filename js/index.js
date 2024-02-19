@@ -123,7 +123,7 @@ $(document).ready(function () {
         cartItems.forEach(function (item) {
             totalCount += item.count;
         });
-        console.log('Total Product Count in Cart:', totalCount);
+        // console.log('Total Product Count in Cart:', totalCount);
         return totalCount;
     }
 
