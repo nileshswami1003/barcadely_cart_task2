@@ -34,7 +34,9 @@ include 'navbar.php';
                 </tr> -->
             </tbody>
         </table>
-        
+        <div class="cartTotalPayable" id="cartTotalPayable">
+
+        </div>
         </div>
     </div>
 </div>
